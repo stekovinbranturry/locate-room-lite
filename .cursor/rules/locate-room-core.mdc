@@ -1,0 +1,29 @@
+---
+description: LocateRoom Lite 核心约束与文档索引（始终生效）
+alwaysApply: true
+---
+
+# LocateRoom Lite — 核心规则
+
+## 目标
+
+4 人 Web 房间，**WebRTC DataChannel P2P** 传位置；信令只做建连与成员管理。
+
+## 权威文档
+
+- 实现：`docs/TECHNICAL.md`
+- 验收：`docs/ACCEPTANCE.md`
+- AI 总览：`AGENTS.md`
+
+## 禁止
+
+- 经 WS/HTTP 转发 `lat`/`lng`
+- 在 `useEffect` cleanup 中立即断开信令（用 `roomSessionManager` 延迟释放）
+- 10Hz 位置更新触发 React 整树 + 地图重渲染
+
+## 工具链
+
+- 包管理：优先 `bun`（仓库有 `bun.lock`）
+- 路径别名：`#/*` → `src/*`
+- Lint：`bun run check`（Biome）
+- shadcn：`pnpm dlx shadcn@latest add <name>`

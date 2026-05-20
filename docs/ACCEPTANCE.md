@@ -1,6 +1,7 @@
 # LocateRoom Lite — 验收清单
 
-> 对照 [需求说明](./REQUIREMENTS.md) 逐项自测与提交前检查。
+> 对照 [需求说明](./REQUIREMENTS.md) 逐项自测与提交前检查。  
+> 每项对应的测试方式（Vitest / Playwright / 人工）见 [测试说明](./TESTING.md)。
 
 ## 功能验收
 

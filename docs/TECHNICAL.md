@@ -344,5 +344,7 @@ src/
 - [需求说明](./REQUIREMENTS.md)
 - [验收清单](./ACCEPTANCE.md)
 - [Agent Skills](./SKILLS.md)
+- [测试说明](./TESTING.md)
+- [AI Agent 指南](../AGENTS.md)
 
 实现过程中若选型变更，请同步更新本文 **§2 / §8** 并在 README 中说明原因。

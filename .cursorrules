@@ -1,6 +1,14 @@
-# shadcn instructions
+# LocateRoom Lite
 
-Use the latest version of Shadcn to install new components, like this command to add a button component:
+人类开发者：见 README.md。AI Agent：见 AGENTS.md 与 .cursor/rules/。
+
+## 核心约束
+
+- 位置仅 WebRTC DataChannel P2P，信令不传 lat/lng
+- 修改 webrtc/room 时保持 roomSessionManager 延迟销毁模式
+- 地图用 rAF + setData，禁止 10Hz 驱动 React 重渲染
+
+## shadcn
 
 ```bash
 pnpm dlx shadcn@latest add button

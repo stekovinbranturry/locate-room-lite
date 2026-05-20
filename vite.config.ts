@@ -9,6 +9,14 @@ import { defineConfig } from 'vite';
 const config = defineConfig({
   resolve: { tsconfigPaths: true },
   plugins: [devtools(), tailwindcss(), tanstackStart(), viteReact()],
+  server: {
+    proxy: {
+      '/signal': {
+        target: 'ws://localhost:3001',
+        ws: true,
+      },
+    },
+  },
 });
 
 export default config;

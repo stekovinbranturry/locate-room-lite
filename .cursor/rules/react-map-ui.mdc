@@ -1,0 +1,28 @@
+---
+description: React 性能、MapLibre 渲染与房间 UI
+globs: src/features/map/**/*,src/routes/**/*.tsx,src/components/**/*
+alwaysApply: false
+---
+
+# React & 地图 UI
+
+## 性能
+
+- 位置状态：`useRoomStore`；**不要**每个 `update` `setState` 重绘 `MapView`
+- 地图：`MapLibre` GeoJSON source `peers`，在 `requestAnimationFrame` 中 **每帧最多** `setData` 一次
+- 遵循 `.agents/skills/vercel-react-best-practices` 中的重渲染规则
+
+## SSR / 水合
+
+- 随机昵称、`sessionStorage` 读取放在 `useEffect`
+- 房间页避免服务端与客户端随机数不一致
+
+## 路由
+
+- `/`：创建/加入房间
+- `/room/$roomId`：地图 + 成员列表 + 分享链接
+
+## UI
+
+- 使用 Tailwind + 现有 `island-shell` 样式令牌
+- 新组件优先 `pnpm dlx shadcn@latest add …`（见 `components.json`）

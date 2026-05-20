@@ -1,0 +1,37 @@
+---
+description: WebRTC Mesh、DataChannel 协议与信令服务约定
+globs: src/features/webrtc/**/*,src/features/room/**/*,server/**/*
+alwaysApply: false
+---
+
+# WebRTC & 信令
+
+## 拓扑
+
+4 人 **Full Mesh**；`shouldInitiateOffer(local, remote)` 决定 offer 方（字典序小者发起）。
+
+## DataChannel 消息（JSON）
+
+```ts
+{ t: 'snapshot' | 'update', peerId, loc: { lat, lng, ts, ... } }
+```
+
+- `snapshot`：channel `open` 时发送，保证新成员立即可见
+- `update`：本地 10Hz 广播
+
+## 信令（`server/signal.ts`）
+
+- 连接：`/signal?roomId&peerId&displayName`
+- 服务端 → 客户端：`room-state` | `joined` | `left` | `signal`
+- 客户端 → 服务端：`signal`（转发 SDP/ICE）、`leave`
+- **绝不**在信令中携带地理位置
+
+## 会话管理
+
+修改 `useRoomSession` / `roomSessionManager` 时须跑：
+
+```bash
+bun run test:signal && bun run test:dual
+```
+
+双人联调失败且成员恒为 `(1/4)` 时，优先检查 WS 是否被 effect 提前关闭。
