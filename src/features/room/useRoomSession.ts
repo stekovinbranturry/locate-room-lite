@@ -12,15 +12,18 @@ type SessionOpts = {
   roomId: string;
   peerId: string;
   displayName: string;
+  enabled?: boolean;
 };
 
-export function useRoomSession({ roomId, peerId, displayName }: SessionOpts) {
+export function useRoomSession({ roomId, peerId, displayName, enabled = true }: SessionOpts) {
   const setLocalLocation = useRoomStore((s) => s.setLocalLocation);
   const pushEvent = useRoomStore((s) => s.pushEvent);
   const key = `${roomId}:${peerId}`;
   const lastSentRef = useRef<LocationPayload | null>(null);
 
   useEffect(() => {
+    if (!enabled) return;
+
     performance.mark('room:join-start');
     perfMonitor.reset();
     clearTrails();
@@ -38,7 +41,7 @@ export function useRoomSession({ roomId, peerId, displayName }: SessionOpts) {
       window.removeEventListener('beforeunload', onUnload);
       releaseRoomSession(key);
     };
-  }, [roomId, peerId, displayName, key]);
+  }, [roomId, peerId, displayName, key, enabled]);
 
   const onTick = useCallback(
     (loc: Parameters<typeof setLocalLocation>[0]) => {
@@ -70,7 +73,7 @@ export function useRoomSession({ roomId, peerId, displayName }: SessionOpts) {
   const onGeoError = useCallback((message: string) => pushEvent(`定位: ${message}`), [pushEvent]);
 
   useGeolocation({
-    enabled: true,
+    enabled,
     getTickIntervalMs: () => getLocationTickMs(useRoomSettingsStore.getState().weakNetMode),
     onTick,
     onError: onGeoError,

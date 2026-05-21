@@ -13,14 +13,20 @@ export const Route = createFileRoute('/room/$roomId')({
 
 function RoomPage() {
   const { roomId } = Route.useParams();
-  const [name, setName] = useState('Guest');
+  const [name, setName] = useState('');
+  const [nameReady, setNameReady] = useState(false);
+
   useEffect(() => {
-    const saved = sessionStorage.getItem('locate-display-name');
-    setName(saved || `用户-${Math.floor(Math.random() * 900 + 100)}`);
+    const saved = sessionStorage.getItem('locate-display-name')?.trim();
+    const finalName = saved || `用户-${Math.floor(Math.random() * 900 + 100)}`;
+    if (!saved) sessionStorage.setItem('locate-display-name', finalName);
+    setName(finalName);
+    setNameReady(true);
   }, []);
+
   const peerId = useMemo(() => getOrCreatePeerId(roomId), [roomId]);
 
-  useRoomSession({ roomId, peerId, displayName: name });
+  useRoomSession({ roomId, peerId, displayName: name, enabled: nameReady });
 
   const copyShareLink = useCallback(async () => {
     const url = `${window.location.origin}/room/${roomId}`;
