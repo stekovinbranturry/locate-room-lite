@@ -289,6 +289,13 @@ a {
 
 .site-header {
   padding-top: env(safe-area-inset-top, 0px);
+  --site-header-height: 3.5rem;
+}
+
+@media (min-width: 640px) {
+  .site-header {
+    --site-header-height: 4rem;
+  }
 }
 
 .header-nav-link {
@@ -351,15 +358,29 @@ a {
   background: color-mix(in oklab, var(--header-bg) 84%, transparent 16%);
 }
 
-/* 房间页移动端：安全区 + 触控目标 */
+/* 房间页：移动端固定铺满视口剩余高度，桌面端扣除 header */
 .room-shell {
   -webkit-tap-highlight-color: transparent;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 639px) {
   .room-shell {
-    height: calc(100dvh - 3.5rem - env(safe-area-inset-top, 0px));
-    min-height: 100dvh;
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    top: calc(var(--site-header-height) + env(safe-area-inset-top, 0px));
+    height: auto;
+    min-height: 0;
+  }
+}
+
+@media (min-width: 640px) {
+  .room-shell {
+    height: calc(100dvh - var(--site-header-height) - env(safe-area-inset-top, 0px));
+    min-height: 480px;
   }
 }
 

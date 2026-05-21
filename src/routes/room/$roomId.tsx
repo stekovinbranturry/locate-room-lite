@@ -40,7 +40,7 @@ function RoomPage() {
   const peerList = Object.values(peers);
 
   return (
-    <div className="room-shell relative h-[calc(100dvh-3.5rem-env(safe-area-inset-top,0px))] min-h-[480px] w-full overflow-hidden sm:h-[calc(100dvh-4rem-env(safe-area-inset-top,0px))]">
+    <div className="room-shell">
       <MapView />
 
       <div className="pointer-events-none absolute inset-0 flex flex-col justify-between p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] pl-[max(0.75rem,env(safe-area-inset-left))] pr-[max(0.75rem,env(safe-area-inset-right))] pt-[max(0.75rem,env(safe-area-inset-top))] sm:p-4">
