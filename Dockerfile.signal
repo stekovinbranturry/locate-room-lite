@@ -1,0 +1,10 @@
+# LocateRoom Lite — WebSocket 信令（仅 server/signal.ts，无 npm 依赖）
+FROM oven/bun:1-alpine
+
+WORKDIR /app
+
+COPY server/signal.ts ./server/signal.ts
+
+ENV NODE_ENV=production
+
+CMD ["bun", "run", "server/signal.ts"]

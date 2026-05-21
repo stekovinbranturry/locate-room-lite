@@ -54,7 +54,7 @@
 ## 交付物
 
 - **GitHub 仓库**
-- **部署链接**（可选，有加分）
+- **部署链接**：[https://locate-room-lite.vercel.app/](https://locate-room-lite.vercel.app/)
 - **README**，需包含：
   - 架构与取舍说明
   - 性能测量数据

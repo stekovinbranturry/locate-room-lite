@@ -3,7 +3,7 @@
  */
 import type { ServerWebSocket } from 'bun';
 
-const PORT = Number(process.env.SIGNAL_PORT ?? 3001);
+const PORT = Number(process.env.PORT ?? process.env.SIGNAL_PORT ?? 3001);
 const MAX_PEERS_PER_ROOM = 4;
 
 type PeerMeta = {
@@ -71,6 +71,7 @@ function removePeer(roomId: string, peerId: string) {
 
 Bun.serve<ClientData>({
   port: PORT,
+  hostname: '0.0.0.0',
   fetch(req, server) {
     const url = new URL(req.url);
     if (url.pathname !== '/signal') {
@@ -133,4 +134,4 @@ Bun.serve<ClientData>({
   },
 });
 
-console.log(`[signal] ws://localhost:${PORT}/signal`);
+console.log(`[signal] http://0.0.0.0:${PORT}  ws://0.0.0.0:${PORT}/signal`);

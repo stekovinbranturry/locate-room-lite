@@ -2,6 +2,8 @@
 
 Web 端实时位置共享小房间（带回家项目）。最多 4 人同房间，通过 **WebRTC DataChannel P2P** 传输位置；信令服务仅负责建连与成员管理，**不转发坐标**。
 
+**在线演示：** [https://locate-room-lite.vercel.app/](https://locate-room-lite.vercel.app/)
+
 ## 功能概览
 
 - 创建房间 / 分享链接加入
@@ -52,12 +54,42 @@ bun run dev
 
 ## 部署到 Vercel
 
-前端通过 [Nitro](https://v3.nitro.build/) + `vercel.json` 部署为 SSR；**信令服务**（`server/signal.ts`，Bun WebSocket）需单独部署到 Railway / Fly.io 等支持长连接的平台。
+**生产地址：** [https://locate-room-lite.vercel.app/](https://locate-room-lite.vercel.app/)
 
-1. 将仓库导入 Vercel（构建命令与安装命令已在 `vercel.json` 中配置为 `bun run build` / `bun install`）。
-2. 在 Vercel 项目 **Environment Variables** 中设置：
-   - `VITE_SIGNAL_URL` = `wss://<你的信令域名>/signal`
-3. 信令服务单独启动：`bun run signal`（或容器化部署 `server/signal.ts`）。
+前端通过 [Nitro](https://v3.nitro.build/) + `vercel.json` 部署为 SSR；**信令服务**单独部署到 Railway（见下方）。
+
+### Railway 信令（推荐）
+
+仓库已包含 `railway.toml` + `Dockerfile.signal`（仅打包 `server/signal.ts`，镜像约几十 MB）。
+
+1. [Railway](https://railway.app/) → **New Project** → **Deploy from GitHub repo** → 选本仓库。
+2. 确认 Service **Settings → Config-as-code** 指向 `railway.toml`（默认根目录即可）。
+3. **Networking → Generate Domain**，得到例如 `https://locate-room-lite-signal-production.up.railway.app`。
+4. 验证：`curl https://<域名>/` 应返回 `LocateRoom signal server`。
+5. 在 **Vercel** 设置环境变量并 **Redeploy**：
+   - `VITE_SIGNAL_URL` = `wss://<域名>/signal`
+
+| 文件 | 作用 |
+|------|------|
+| `railway.toml` | Railway 构建/健康检查配置 |
+| `Dockerfile.signal` | Bun 信令容器（监听 `PORT` / `0.0.0.0`） |
+| `.env.example` | 环境变量示例 |
+
+CLI 部署（可选）：
+
+```bash
+npm i -g @railway/cli && railway login
+railway init          # 新建项目并关联当前目录
+railway up            # 按 railway.toml 构建并部署
+railway domain        # 生成公网域名
+```
+
+> Railway 会自动注入 `PORT`；信令服务已适配，无需再设 `SIGNAL_PORT`。
+
+### Vercel 前端
+
+1. 构建命令与安装命令见 `vercel.json`（`bun run build` / `bun install`）。
+2. 环境变量 `VITE_SIGNAL_URL` 见上文（**必须 Redeploy 才生效**）。
 
 本地预览 Vercel 构建产物：
 
@@ -143,8 +175,8 @@ pnpm dlx shadcn@latest add button
 
 | 组件 | 建议 |
 |------|------|
-| 前端 | Vercel / Cloudflare Pages（**HTTPS 必须**） |
-| 信令 | 独立进程或容器，`wss` 与前端同域反代 |
+| 前端 | [locate-room-lite.vercel.app](https://locate-room-lite.vercel.app/)（Vercel + Nitro SSR） |
+| 信令 | Railway（`railway.toml` + `Dockerfile.signal`），`wss://<railway-domain>/signal` |
 | TURN | 复杂 NAT 可选配置；同网/简单 NAT 可用公共 STUN |
 
 移动端定位与 WebRTC 依赖安全上下文，勿在纯 HTTP 生产环境测试。

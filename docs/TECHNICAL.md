@@ -54,8 +54,8 @@
 
 | 组件 | 建议 | 说明 |
 |------|------|------|
-| 前端 | **Vercel / Cloudflare Pages** | 静态 + SSR 按 TanStack Start 文档 |
-| 信令 | **同域反代** 或 **Railway / Fly.io 单实例** | WS 需持久连接；可与前端分域，生产用 `wss://` |
+| 前端 | **Vercel** | [locate-room-lite.vercel.app](https://locate-room-lite.vercel.app/)（TanStack Start + Nitro SSR） |
+| 信令 | **Railway**（`Dockerfile.signal`） | [locate-room-lite.vercel.app](https://locate-room-lite.vercel.app/) 前端 + Railway 信令；`VITE_SIGNAL_URL=wss://…/signal` |
 | 环境 | **必须 HTTPS** | 浏览器 `getUserMedia` / 精确定位与 WebRTC 在移动端要求安全上下文 |
 
 ---

@@ -37,7 +37,7 @@
 ## 交付物验收
 
 - [ ] 已提供可访问的 **GitHub 仓库**
-- [ ] 已提供 **部署链接**（选做，有加分）
+- [x] 已提供 **部署链接**：[https://locate-room-lite.vercel.app/](https://locate-room-lite.vercel.app/)
 - [ ] **README** 包含架构与取舍说明
 - [ ] **README** 包含性能测量数据（对应上表指标）
 - [ ] **README** 包含 **AI 协作说明**：
