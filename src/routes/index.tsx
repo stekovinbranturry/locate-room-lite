@@ -12,7 +12,7 @@ import {
 } from '#/components/ui/dialog';
 import { Input } from '#/components/ui/input';
 import { Label } from '#/components/ui/label';
-import { createRoomId } from '#/lib/config';
+import { createRoomId, persistDisplayName, readStoredDisplayName } from '#/lib/config';
 
 export const Route = createFileRoute('/')({ component: HomePage });
 
@@ -42,17 +42,11 @@ function HomePage() {
   const [joinError, setJoinError] = useState('');
 
   useEffect(() => {
-    setDisplayName(sessionStorage.getItem('locate-display-name') ?? '');
+    setDisplayName(readStoredDisplayName());
   }, []);
 
-  const resolveDisplayName = () => {
-    const trimmed = displayName.trim();
-    return trimmed || `用户-${Math.floor(Math.random() * 900 + 100)}`;
-  };
-
   const persistNameAndNavigate = (roomId: string) => {
-    const name = resolveDisplayName();
-    sessionStorage.setItem('locate-display-name', name);
+    const name = persistDisplayName(displayName);
     setDisplayName(name);
     setJoinOpen(false);
     setRoomIdInput('');

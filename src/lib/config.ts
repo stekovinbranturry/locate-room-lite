@@ -45,3 +45,21 @@ export function getOrCreatePeerId(roomId: string): string {
   }
   return createPeerId();
 }
+
+export function readStoredDisplayName(): string {
+  if (typeof sessionStorage === 'undefined') return '';
+  return sessionStorage.getItem('locate-display-name')?.trim() ?? '';
+}
+
+export function resolveDisplayName(input?: string): string {
+  const trimmed = input?.trim() ?? readStoredDisplayName();
+  return trimmed || `用户-${Math.floor(Math.random() * 900 + 100)}`;
+}
+
+export function persistDisplayName(input?: string): string {
+  const name = resolveDisplayName(input);
+  if (typeof sessionStorage !== 'undefined') {
+    sessionStorage.setItem('locate-display-name', name);
+  }
+  return name;
+}
