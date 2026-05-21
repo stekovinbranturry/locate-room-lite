@@ -103,10 +103,11 @@ async function handleServerMessage(roomId: string, localPeerId: string, msg: Ser
   }
 
   if (msg.type === 'left') {
+    const displayName = store.peers[msg.peerId]?.meta.displayName || 'Guest';
     pool.handlePeerLeft(msg.peerId);
     store.removePeer(msg.peerId);
     removeTrail(msg.peerId);
-    store.pushEvent('有成员离开了房间');
+    store.pushEvent(`${displayName}离开了房间`);
     return;
   }
 

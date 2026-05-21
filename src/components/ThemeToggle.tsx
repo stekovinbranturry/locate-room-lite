@@ -68,15 +68,7 @@ export default function ThemeToggle() {
       : `Theme mode: ${mode}. Click to switch mode.`;
 
   return (
-    <Button
-      type="button"
-      variant="chip"
-      size="sm"
-      onClick={toggleMode}
-      aria-label={label}
-      title={label}
-      className="px-2.5 sm:px-3"
-    >
+    <Button type="button" variant="outline" size="sm" onClick={toggleMode} aria-label={label} title={label}>
       {mode === 'auto' ? 'Auto' : mode === 'dark' ? 'Dark' : 'Light'}
     </Button>
   );

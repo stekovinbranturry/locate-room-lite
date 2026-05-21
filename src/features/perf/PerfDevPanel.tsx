@@ -58,8 +58,8 @@ export default function PerfDevPanel() {
     return (
       <Button
         type="button"
-        variant="surface"
-        size="pill"
+        variant="outline"
+        size="sm"
         onClick={() => setOpen(true)}
         className="pointer-events-auto fixed bottom-4 right-4 z-30 bg-surface-strong/95 backdrop-blur-sm"
         style={{ bottom: 'max(1rem, env(safe-area-inset-bottom))' }}
@@ -96,12 +96,12 @@ export default function PerfDevPanel() {
       style={{ bottom: 'max(1rem, env(safe-area-inset-bottom))' }}
     >
       <div className="mb-2 flex items-center justify-between gap-2">
-        <p className="island-kicker m-0">性能监控</p>
+        <p className="m-0 text-[0.69rem] font-bold tracking-[0.16em] text-kicker uppercase">性能监控</p>
         <div className="flex gap-1">
-          <Button type="button" variant="ghost" size="pill" onClick={() => setCollapsed((c) => !c)}>
+          <Button type="button" variant="ghost" size="sm" onClick={() => setCollapsed((c) => !c)}>
             {collapsed ? '展开' : '收起'}
           </Button>
-          <Button type="button" variant="ghost" size="pill" onClick={() => setOpen(false)}>
+          <Button type="button" variant="ghost" size="sm" onClick={() => setOpen(false)}>
             关闭
           </Button>
         </div>
@@ -150,15 +150,16 @@ export default function PerfDevPanel() {
           <div className="mt-2 flex flex-wrap gap-2">
             <Button
               type="button"
-              variant={showTrails ? 'pillActive' : 'pill'}
+              variant={showTrails ? 'default' : 'outline'}
+              size="sm"
               onClick={() => setShowTrails(!showTrails)}
             >
               轨迹 {showTrails ? '开' : '关'}
             </Button>
-            <Button type="button" variant="pill" onClick={cycleWeak}>
+            <Button type="button" variant="outline" size="sm" onClick={cycleWeak}>
               弱网: {weakNetMode}
             </Button>
-            <Button type="button" variant="pill" onClick={() => void copyReport()}>
+            <Button type="button" variant="outline" size="sm" onClick={() => void copyReport()}>
               导出 JSON
             </Button>
           </div>
