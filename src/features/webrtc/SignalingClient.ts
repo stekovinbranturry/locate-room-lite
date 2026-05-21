@@ -4,6 +4,7 @@ export type SignalingHandlers = {
   onMessage: (msg: ServerMessage) => void;
   onOpen?: () => void;
   onClose?: () => void;
+  onError?: () => void;
 };
 
 export class SignalingClient {
@@ -47,6 +48,10 @@ export class SignalingClient {
     this.ws.onclose = () => {
       this.handlers.onClose?.();
       if (!this.closedByUser) this.scheduleReconnect();
+    };
+
+    this.ws.onerror = () => {
+      this.handlers.onError?.();
     };
   }
 

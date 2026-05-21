@@ -54,6 +54,10 @@ export function acquireRoomSession(opts: { roomId: string; peerId: string; displ
   const signal = new SignalingClient(getSignalUrl(opts.roomId, opts.peerId, opts.displayName), {
     onOpen: () => store.setConnectionStatus('connected'),
     onClose: () => store.setConnectionStatus('reconnecting'),
+    onError: () => {
+      store.setConnectionStatus('reconnecting');
+      store.pushEvent('信令连接失败，请检查 Railway 信令服务是否在线');
+    },
     onMessage: (msg) => void handleServerMessage(opts.roomId, opts.peerId, msg),
   });
 

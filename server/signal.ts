@@ -74,8 +74,11 @@ Bun.serve<ClientData>({
   hostname: '0.0.0.0',
   fetch(req, server) {
     const url = new URL(req.url);
+    if (url.pathname === '/' || url.pathname === '/health') {
+      return Response.json({ ok: true, service: 'locate-room-signal' });
+    }
     if (url.pathname !== '/signal') {
-      return new Response('LocateRoom signal server', { status: 200 });
+      return new Response('LocateRoom signal server', { status: 404 });
     }
 
     const roomId = url.searchParams.get('roomId');

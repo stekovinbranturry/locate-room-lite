@@ -65,9 +65,16 @@ bun run dev
 1. [Railway](https://railway.app/) → **New Project** → **Deploy from GitHub repo** → 选本仓库。
 2. 确认 Service **Settings → Config-as-code** 指向 `railway.toml`（默认根目录即可）。
 3. **Networking → Generate Domain** → 当前信令地址：[locate-room-lite-production.up.railway.app](https://locate-room-lite-production.up.railway.app)
-4. 验证：`curl https://locate-room-lite-production.up.railway.app/` 应返回 `LocateRoom signal server`
-5. 在 **Vercel** 重新部署前端（`vercel.json` 已含 `VITE_SIGNAL_URL`，push 后自动生效；也可在 Dashboard 覆盖）：
+4. 验证：`curl https://locate-room-lite-production.up.railway.app/health` 应返回 `{"ok":true,...}`（若 502 说明信令进程未启动，见下方排查）
+5. 在 **Vercel** 重新部署前端（`vercel.json` + `.env.production` 已含 `VITE_SIGNAL_URL`）：
    - `VITE_SIGNAL_URL` = `wss://locate-room-lite-production.up.railway.app/signal`
+
+**信令连不上 / 502 排查**
+
+1. Railway → **Deployments** → 最新部署是否 Success；查看 **Deploy Logs** 是否有 `[signal] http://0.0.0.0:…`
+2. **Settings → Config-as-code** 必须为 `railway.toml`（使用 `Dockerfile.signal`，不要跑 `vite build`）
+3. 本地自检：`curl https://locate-room-lite-production.up.railway.app/health`
+4. 失败时在 Railway 点 **Redeploy** 或 **Restart**
 
 | 文件 | 作用 |
 |------|------|
