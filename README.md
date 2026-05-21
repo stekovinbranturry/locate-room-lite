@@ -73,7 +73,8 @@ bun run dev
 |------|------|
 | `railway.toml` | Railway 构建/健康检查配置 |
 | `Dockerfile.signal` | Bun 信令容器（监听 `PORT` / `0.0.0.0`） |
-| `.env.example` | 环境变量示例 |
+| `.env.production` | Vite 生产构建时自动加载的信令 URL |
+| `.env.example` | 环境变量说明（本地可选） |
 
 CLI 部署（可选）：
 
@@ -89,7 +90,7 @@ railway domain        # 生成公网域名
 ### Vercel 前端
 
 1. 构建命令与安装命令见 `vercel.json`（`bun run build` / `bun install`）。
-2. 信令地址已在 `vercel.json` → `env.VITE_SIGNAL_URL` 中配置（构建时注入）；改域名后 push 并重新部署即可。
+2. 信令 URL 通过 **`VITE_SIGNAL_URL`** 注入（见 `.env.production` / `vercel.json`）；Vercel Dashboard 里变量名也必须是 `VITE_SIGNAL_URL`，`PRODUCTION_SIGNAL_URL` 等无前缀变量**不会**进浏览器 bundle。
 3. 若需覆盖或存放密钥，仍可在 Vercel Dashboard → Environment Variables 设置（敏感项**不要**写进 git）。
 
 本地预览 Vercel 构建产物：
