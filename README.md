@@ -64,10 +64,10 @@ bun run dev
 
 1. [Railway](https://railway.app/) → **New Project** → **Deploy from GitHub repo** → 选本仓库。
 2. 确认 Service **Settings → Config-as-code** 指向 `railway.toml`（默认根目录即可）。
-3. **Networking → Generate Domain**，得到例如 `https://locate-room-lite-signal-production.up.railway.app`。
-4. 验证：`curl https://<域名>/` 应返回 `LocateRoom signal server`。
-5. 在 **Vercel** 设置环境变量并 **Redeploy**：
-   - `VITE_SIGNAL_URL` = `wss://<域名>/signal`
+3. **Networking → Generate Domain** → 当前信令地址：[locate-room-lite-production.up.railway.app](https://locate-room-lite-production.up.railway.app)
+4. 验证：`curl https://locate-room-lite-production.up.railway.app/` 应返回 `LocateRoom signal server`
+5. 在 **Vercel** 重新部署前端（`vercel.json` 已含 `VITE_SIGNAL_URL`，push 后自动生效；也可在 Dashboard 覆盖）：
+   - `VITE_SIGNAL_URL` = `wss://locate-room-lite-production.up.railway.app/signal`
 
 | 文件 | 作用 |
 |------|------|
@@ -89,7 +89,8 @@ railway domain        # 生成公网域名
 ### Vercel 前端
 
 1. 构建命令与安装命令见 `vercel.json`（`bun run build` / `bun install`）。
-2. 环境变量 `VITE_SIGNAL_URL` 见上文（**必须 Redeploy 才生效**）。
+2. 信令地址已在 `vercel.json` → `env.VITE_SIGNAL_URL` 中配置（构建时注入）；改域名后 push 并重新部署即可。
+3. 若需覆盖或存放密钥，仍可在 Vercel Dashboard → Environment Variables 设置（敏感项**不要**写进 git）。
 
 本地预览 Vercel 构建产物：
 
@@ -176,7 +177,7 @@ pnpm dlx shadcn@latest add button
 | 组件 | 建议 |
 |------|------|
 | 前端 | [locate-room-lite.vercel.app](https://locate-room-lite.vercel.app/)（Vercel + Nitro SSR） |
-| 信令 | Railway（`railway.toml` + `Dockerfile.signal`），`wss://<railway-domain>/signal` |
+| 信令 | [locate-room-lite-production.up.railway.app](https://locate-room-lite-production.up.railway.app)（`wss://…/signal`） |
 | TURN | 复杂 NAT 可选配置；同网/简单 NAT 可用公共 STUN |
 
 移动端定位与 WebRTC 依赖安全上下文，勿在纯 HTTP 生产环境测试。

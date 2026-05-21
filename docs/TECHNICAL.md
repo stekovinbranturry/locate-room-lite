@@ -55,7 +55,7 @@
 | 组件 | 建议 | 说明 |
 |------|------|------|
 | 前端 | **Vercel** | [locate-room-lite.vercel.app](https://locate-room-lite.vercel.app/)（TanStack Start + Nitro SSR） |
-| 信令 | **Railway**（`Dockerfile.signal`） | [locate-room-lite.vercel.app](https://locate-room-lite.vercel.app/) 前端 + Railway 信令；`VITE_SIGNAL_URL=wss://…/signal` |
+| 信令 | **Railway** | [locate-room-lite-production.up.railway.app](https://locate-room-lite-production.up.railway.app) · `VITE_SIGNAL_URL=wss://locate-room-lite-production.up.railway.app/signal` |
 | 环境 | **必须 HTTPS** | 浏览器 `getUserMedia` / 精确定位与 WebRTC 在移动端要求安全上下文 |
 
 ---
