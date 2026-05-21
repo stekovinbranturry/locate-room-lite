@@ -50,8 +50,8 @@ export default function MapView() {
     const map = new maplibregl.Map({
       container: containerRef.current,
       style: 'https://demotiles.maplibre.org/style.json',
-      center: [116.3974, 39.9093],
-      zoom: 12,
+      center: [0, 20],
+      zoom: 1.5,
       attributionControl: true,
     });
 
