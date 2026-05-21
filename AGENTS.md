@@ -29,7 +29,10 @@ server/signal.ts              # Bun WebSocket 信令
 src/features/webrtc/          # 协议、SignalingClient、PeerConnectionPool
 src/features/room/            # memberStore、roomSessionManager、useRoomSession
 src/features/map/MapView.tsx  # MapLibre，rAF 批量 setData
-src/features/location/        # watchPosition + 100ms tick
+src/features/perf/          # perfMonitor、PerfDevPanel
+src/features/trajectory/    # trailStore
+src/features/network/       # weakNetPolicy
+src/features/location/      # watchPosition + 动态 tick
 src/routes/                   # / 创建房间，/room/$roomId 主界面
 scripts/                      # dual-signaling-test、dual-browser-test
 .agents/skills/               # 项目级 skills（勿全局 -g 安装）

@@ -287,6 +287,21 @@ a {
   color: var(--kicker);
 }
 
+.site-header {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+.header-nav-link {
+  color: var(--sea-ink-soft);
+  text-decoration: none;
+}
+
+.header-nav-link:hover,
+.header-nav-link.is-active {
+  color: var(--sea-ink);
+  background: var(--chip-bg);
+}
+
 .nav-link {
   position: relative;
   text-decoration: none;
@@ -334,6 +349,18 @@ a {
 .site-footer {
   border-top: 1px solid var(--line);
   background: color-mix(in oklab, var(--header-bg) 84%, transparent 16%);
+}
+
+/* 房间页移动端：安全区 + 触控目标 */
+.room-shell {
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (max-width: 640px) {
+  .room-shell {
+    height: calc(100dvh - 3.5rem - env(safe-area-inset-top, 0px));
+    min-height: 100dvh;
+  }
 }
 
 @layer base {

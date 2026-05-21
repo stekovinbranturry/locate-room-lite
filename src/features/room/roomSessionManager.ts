@@ -1,4 +1,5 @@
 import { useRoomStore } from '#/features/room/memberStore';
+import { appendTrail, removeTrail } from '#/features/trajectory/trailStore';
 import { PeerConnectionPool } from '#/features/webrtc/PeerConnectionPool';
 import type { DataChannelMessage, ServerMessage } from '#/features/webrtc/protocol';
 import { SignalingClient } from '#/features/webrtc/SignalingClient';
@@ -100,6 +101,7 @@ async function handleServerMessage(roomId: string, localPeerId: string, msg: Ser
   if (msg.type === 'left') {
     pool.handlePeerLeft(msg.peerId);
     store.removePeer(msg.peerId);
+    removeTrail(msg.peerId);
     store.pushEvent('有成员离开了房间');
     return;
   }
@@ -112,6 +114,7 @@ async function handleServerMessage(roomId: string, localPeerId: string, msg: Ser
 function handleLocation(fromPeerId: string, msg: DataChannelMessage) {
   if (msg.t === 'snapshot' || msg.t === 'update') {
     useRoomStore.getState().setPeerLocation(fromPeerId, msg.loc);
+    appendTrail(fromPeerId, msg.loc);
   }
 }
 

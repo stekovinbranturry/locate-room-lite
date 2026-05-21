@@ -1,3 +1,4 @@
+import { perfMonitor } from '#/features/perf/perfMonitor';
 import {
   type DataChannelMessage,
   encodeDataChannelMessage,
@@ -21,7 +22,10 @@ type PeerLink = {
   remotePeerId: string;
   makingOffer: boolean;
   ignoreOffer: boolean;
+  pingTimer: ReturnType<typeof setInterval> | null;
 };
+
+const PING_INTERVAL_MS = 3000;
 
 export class PeerConnectionPool {
   private links = new Map<string, PeerLink>();
@@ -41,12 +45,15 @@ export class PeerConnectionPool {
     this.lastLocalLocation = loc;
   }
 
+  getOpenLinkCount() {
+    return [...this.links.values()].filter((l) => l.dc?.readyState === 'open').length;
+  }
+
   async handlePeerJoined(remotePeerId: string) {
     if (remotePeerId === this.localPeerId || this.links.has(remotePeerId)) return;
     if (shouldInitiateOffer(this.localPeerId, remotePeerId)) {
       await this.createOffererLink(remotePeerId);
     }
-    // else: wait for remote offer via handleSignal
   }
 
   async handleSignal(from: string, payload: SignalPayload) {
@@ -89,18 +96,24 @@ export class PeerConnectionPool {
   handlePeerLeft(remotePeerId: string) {
     const link = this.links.get(remotePeerId);
     if (!link) return;
+    if (link.pingTimer) clearInterval(link.pingTimer);
     link.dc?.close();
     link.pc.close();
     this.links.delete(remotePeerId);
     this.callbacks.onLinkState(remotePeerId, 'closed');
+    perfMonitor.setPeerLinkCount(this.getOpenLinkCount());
   }
 
   broadcastLocation(loc: LocationPayload) {
     this.lastLocalLocation = loc;
     const msg: DataChannelMessage = { t: 'update', peerId: this.localPeerId, loc };
     const raw = encodeDataChannelMessage(msg);
+    const bytes = new TextEncoder().encode(raw).length;
     for (const link of this.links.values()) {
-      if (link.dc?.readyState === 'open') link.dc.send(raw);
+      if (link.dc?.readyState === 'open') {
+        link.dc.send(raw);
+        perfMonitor.recordDcSent(bytes);
+      }
     }
   }
 
@@ -116,6 +129,7 @@ export class PeerConnectionPool {
       remotePeerId,
       makingOffer: false,
       ignoreOffer: false,
+      pingTimer: null,
     };
     this.links.set(remotePeerId, link);
     return link;
@@ -149,6 +163,7 @@ export class PeerConnectionPool {
       else if (s === 'disconnected') this.callbacks.onLinkState(link.remotePeerId, 'disconnected');
       else if (s === 'failed') this.callbacks.onLinkState(link.remotePeerId, 'failed');
       else if (s === 'closed') this.callbacks.onLinkState(link.remotePeerId, 'closed');
+      perfMonitor.setPeerLinkCount(this.getOpenLinkCount());
     };
 
     link.pc.ondatachannel = (ev) => {
@@ -160,22 +175,46 @@ export class PeerConnectionPool {
     link.dc = dc;
     dc.onopen = () => {
       this.callbacks.onLinkState(link.remotePeerId, 'connected');
+      perfMonitor.setPeerLinkCount(this.getOpenLinkCount());
       if (this.lastLocalLocation) {
         const snap: DataChannelMessage = {
           t: 'snapshot',
           peerId: this.localPeerId,
           loc: this.lastLocalLocation,
         };
-        dc.send(encodeDataChannelMessage(snap));
+        const raw = encodeDataChannelMessage(snap);
+        dc.send(raw);
+        perfMonitor.recordDcSent(new TextEncoder().encode(raw).length);
       }
+      link.pingTimer = setInterval(() => {
+        if (dc.readyState !== 'open') return;
+        const raw = encodeDataChannelMessage({ t: 'ping', ts: Date.now() });
+        dc.send(raw);
+        perfMonitor.recordDcSent(new TextEncoder().encode(raw).length);
+      }, PING_INTERVAL_MS);
     };
     dc.onmessage = (ev) => {
-      const msg = parseDataChannelMessage(String(ev.data));
-      if (msg && (msg.t === 'snapshot' || msg.t === 'update')) {
+      const raw = String(ev.data);
+      perfMonitor.recordDcRecv(new TextEncoder().encode(raw).length);
+      const msg = parseDataChannelMessage(raw);
+      if (!msg) return;
+
+      if (msg.t === 'ping') {
+        const pong = encodeDataChannelMessage({ t: 'pong', ts: msg.ts });
+        dc.send(pong);
+        perfMonitor.recordDcSent(new TextEncoder().encode(pong).length);
+        return;
+      }
+      if (msg.t === 'pong') {
+        perfMonitor.recordRtt(Date.now() - msg.ts);
+        return;
+      }
+      if (msg.t === 'snapshot' || msg.t === 'update') {
         this.callbacks.onLocation(msg.peerId, msg);
         if (!this.markedFirstRemote) {
           this.markedFirstRemote = true;
           performance.mark('room:first-remote-location');
+          perfMonitor.resolveFirstRemote();
         }
       }
     };

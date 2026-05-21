@@ -13,6 +13,13 @@ export function getSignalUrl(roomId: string, peerId: string, displayName: string
     const port = import.meta.env.VITE_SIGNAL_PORT ?? '3001';
     return `ws://localhost:${port}/signal?${params}`;
   }
+
+  const signalBase = import.meta.env.VITE_SIGNAL_URL as string | undefined;
+  if (signalBase) {
+    const joiner = signalBase.includes('?') ? '&' : '?';
+    return `${signalBase}${joiner}${params}`;
+  }
+
   const proto = typeof window !== 'undefined' && window.location.protocol === 'https:' ? 'wss' : 'ws';
   const host = typeof window !== 'undefined' ? window.location.host : 'localhost:3000';
   return `${proto}://${host}/signal?${params}`;

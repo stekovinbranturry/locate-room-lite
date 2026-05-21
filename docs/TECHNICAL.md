@@ -328,14 +328,27 @@ src/
 
 ---
 
-## 10. 加分项扩展（预留）
+## 10. 加分项实现
 
-| 功能 | 技术要点 |
-|------|----------|
-| 按住说话 | 第二条 DataChannel 或同一 PC 的 `addTrack` 音频；VAD 可选 |
-| 弱网降级 | `update` 降频至 5Hz；位移阈值过滤；显示 RTT |
-| 轨迹 | 本地 `RingBuffer` 存历史点，MapLibre `line` layer |
-| 移动优化 | 全屏地图、`visualViewport`、iOS 安全区、减少重绘 |
+| 功能 | 状态 | 实现要点 |
+|------|------|----------|
+| 性能监控面板 | ✅ | `src/features/perf/perfMonitor.ts` + `PerfDevPanel.tsx`；rAF 采样 fps、`performance.measure` 首屏、DC 字节计数 |
+| 弱网降级 | ✅ | `weakNetPolicy.ts`：5Hz（200ms tick）、位移阈值 1.5m/4m、RTT ping/pong + Network Information API |
+| 位置轨迹 | ✅ | `trailStore.ts` 每 peer 150 点；MapLibre `trails` line layer，面板开关 |
+| 移动优化 | ✅ | `safe-area` 内边距、`min-h-11` 触控、`.room-shell` 移动端 `dvh` |
+| 按住说话 | ❌ | Full Mesh 需逐链路 `addTrack` + 重协商，MVP 未做；README 说明取舍 |
+
+### 10.1 性能面板指标
+
+| 指标 | 采集方式 | 目标 |
+|------|----------|------|
+| 位置发送 Hz | 每次 `broadcastLocation` 打点时间戳 | ≥10 |
+| 地图 fps | `startMapFpsSampler` rAF 计数 | ≥50 |
+| 首屏他人 ms | `room:join-start` → `room:first-remote-location` | ≤3000 |
+| RTT | DataChannel `ping`/`pong` | 参考值，驱动弱网判定 |
+| DC 流量 | 发送/接收 UTF-8 字节累计 | 调试 P2P 用 |
+
+面板开关状态持久化：`localStorage.locate-perf-panel`（`0` 关闭）。
 
 ---
 

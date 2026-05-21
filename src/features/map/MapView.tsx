@@ -1,7 +1,10 @@
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { useEffect, useRef } from 'react';
+import { perfMonitor, startMapFpsSampler, stopMapFpsSampler } from '#/features/perf/perfMonitor';
 import { useRoomStore } from '#/features/room/memberStore';
+import { useRoomSettingsStore } from '#/features/room/roomSettingsStore';
+import { trailsToGeoJSON } from '#/features/trajectory/trailStore';
 import type { LocationPayload } from '#/features/webrtc/protocol';
 
 function toFeatureCollection(
@@ -37,9 +40,12 @@ export default function MapView() {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
   const rafRef = useRef<number | null>(null);
+  const showTrails = useRoomSettingsStore((s) => s.showTrails);
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
+
+    startMapFpsSampler();
 
     const map = new maplibregl.Map({
       container: containerRef.current,
@@ -56,6 +62,23 @@ export default function MapView() {
         type: 'geojson',
         data: { type: 'FeatureCollection', features: [] },
         promoteId: 'peerId',
+      });
+
+      map.addSource('trails', {
+        type: 'geojson',
+        data: { type: 'FeatureCollection', features: [] },
+      });
+
+      map.addLayer({
+        id: 'trails-line',
+        type: 'line',
+        source: 'trails',
+        layout: { 'line-join': 'round', 'line-cap': 'round' },
+        paint: {
+          'line-color': '#4fb8b2',
+          'line-width': 3,
+          'line-opacity': 0.55,
+        },
       });
 
       map.addLayer({
@@ -90,11 +113,19 @@ export default function MapView() {
         rafRef.current = null;
         const m = mapRef.current;
         if (!m?.isStyleLoaded()) return;
-        const src = m.getSource('peers') as maplibregl.GeoJSONSource | undefined;
-        if (!src) return;
 
         const state = useRoomStore.getState();
-        src.setData(toFeatureCollection(state.localPeerId, state.localLocation, state.peers));
+        const peerSrc = m.getSource('peers') as maplibregl.GeoJSONSource | undefined;
+        if (peerSrc) {
+          peerSrc.setData(toFeatureCollection(state.localPeerId, state.localLocation, state.peers));
+          perfMonitor.recordMapSetData();
+        }
+
+        const trailSrc = m.getSource('trails') as maplibregl.GeoJSONSource | undefined;
+        if (trailSrc && useRoomSettingsStore.getState().showTrails) {
+          trailSrc.setData(trailsToGeoJSON());
+          perfMonitor.recordMapSetData();
+        }
 
         const all = [
           ...(state.localLocation ? [[state.localLocation.lng, state.localLocation.lat]] : []),
@@ -107,14 +138,30 @@ export default function MapView() {
     };
 
     const unsub = useRoomStore.subscribe(scheduleUpdate);
+    const unsubTrails = useRoomSettingsStore.subscribe(scheduleUpdate);
 
     return () => {
       unsub();
+      unsubTrails();
+      stopMapFpsSampler();
       if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
       map.remove();
       mapRef.current = null;
     };
   }, []);
 
-  return <div ref={containerRef} className="h-full w-full" />;
+  useEffect(() => {
+    const m = mapRef.current;
+    if (!m?.isStyleLoaded()) return;
+    const trailSrc = m.getSource('trails') as maplibregl.GeoJSONSource | undefined;
+    if (!trailSrc) return;
+    if (showTrails) {
+      trailSrc.setData(trailsToGeoJSON());
+      m.setLayoutProperty('trails-line', 'visibility', 'visible');
+    } else {
+      m.setLayoutProperty('trails-line', 'visibility', 'none');
+    }
+  }, [showTrails]);
+
+  return <div ref={containerRef} className="h-full w-full touch-none" />;
 }

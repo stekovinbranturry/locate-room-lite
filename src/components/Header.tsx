@@ -1,27 +1,34 @@
-import { Link } from '@tanstack/react-router';
+import { Link, useRouterState } from '@tanstack/react-router';
 import ThemeToggle from './ThemeToggle';
 
 export default function Header() {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const isHome = pathname === '/';
+
   return (
-    <header className="sticky top-0 z-50 border-b border-[var(--line)] bg-[var(--header-bg)] px-4 backdrop-blur-lg">
-      <nav className="page-wrap flex flex-wrap items-center gap-x-3 gap-y-2 py-3 sm:py-4">
-        <h2 className="m-0 flex-shrink-0 text-base font-semibold tracking-tight">
-          <Link
-            to="/"
-            className="inline-flex items-center gap-2 rounded-full border border-[var(--chip-line)] bg-[var(--chip-bg)] px-3 py-1.5 text-sm text-[var(--sea-ink)] no-underline shadow-[0_8px_24px_rgba(30,90,72,0.08)] sm:px-4 sm:py-2"
-          >
-            <span className="h-2 w-2 rounded-full bg-[linear-gradient(90deg,#56c6be,#7ed3bf)]" />
-            LocateRoom Lite
-          </Link>
-        </h2>
+    <header className="site-header sticky top-0 z-50 border-b border-[var(--line)] bg-[var(--header-bg)] backdrop-blur-lg">
+      <nav className="page-wrap flex h-14 items-center justify-between gap-3 px-4 sm:h-16">
+        <Link
+          to="/"
+          className="inline-flex min-w-0 max-w-[min(100%,14rem)] items-center gap-2 rounded-full border border-[var(--chip-line)] bg-[var(--chip-bg)] px-3 py-1.5 text-sm font-semibold text-[var(--sea-ink)] no-underline shadow-[0_8px_24px_rgba(30,90,72,0.08)] sm:max-w-none sm:px-4 sm:py-2"
+        >
+          <span className="h-2 w-2 shrink-0 rounded-full bg-[linear-gradient(90deg,#56c6be,#7ed3bf)]" />
+          <span className="truncate sm:hidden">LocateRoom</span>
+          <span className="hidden truncate sm:inline">LocateRoom Lite</span>
+        </Link>
 
-        <div className="order-3 flex w-full flex-wrap items-center gap-x-4 gap-y-1 pb-1 text-sm font-semibold sm:order-none sm:w-auto sm:flex-nowrap sm:pb-0">
-          <Link to="/" className="nav-link" activeProps={{ className: 'nav-link is-active' }}>
-            首页
-          </Link>
-        </div>
-
-        <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
+        <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+          {!isHome && (
+            <Link
+              to="/"
+              className="header-nav-link rounded-lg px-2.5 py-1.5 text-sm font-semibold no-underline"
+              activeProps={{
+                className: 'header-nav-link is-active rounded-lg px-2.5 py-1.5 text-sm font-semibold no-underline',
+              }}
+            >
+              首页
+            </Link>
+          )}
           <ThemeToggle />
         </div>
       </nav>
