@@ -54,8 +54,8 @@ function RoomPage() {
         <div className="pointer-events-auto flex flex-wrap items-start gap-2">
           <div className="island-shell max-w-[min(100%,20rem)] rounded-2xl px-4 py-3 shadow-lg">
             <p className="island-kicker m-0 mb-1">房间</p>
-            <p className="m-0 truncate font-mono text-xs text-[var(--sea-ink-soft)]">{roomId}</p>
-            <p className="mt-2 m-0 text-sm text-[var(--sea-ink)]">
+            <p className="m-0 truncate font-mono text-xs text-sea-ink-soft">{roomId}</p>
+            <p className="mt-2 m-0 text-sm text-sea-ink">
               信令:{' '}
               <span className="font-semibold">
                 {connectionStatus === 'connected'
@@ -81,13 +81,13 @@ function RoomPage() {
             <p className="island-kicker m-0 mb-2">成员 ({peerList.length + 1}/4)</p>
             <ul className="m-0 list-none space-y-1.5 p-0 text-sm">
               <li className="flex items-center justify-between gap-2">
-                <span className="font-medium text-[var(--sea-ink)]">{localName || name} (我)</span>
-                <span className="text-xs text-[var(--lagoon-deep)]">在线</span>
+                <span className="font-medium text-sea-ink">{localName || name} (我)</span>
+                <span className="text-xs text-lagoon-deep">在线</span>
               </li>
               {peerList.map((p) => (
                 <li key={p.peerId} className="flex items-center justify-between gap-2">
-                  <span className="truncate text-[var(--sea-ink)]">{p.meta.displayName}</span>
-                  <span className="text-xs text-[var(--sea-ink-soft)]">
+                  <span className="truncate text-sea-ink">{p.meta.displayName}</span>
+                  <span className="text-xs text-sea-ink-soft">
                     {p.linkState === 'connected'
                       ? 'P2P'
                       : p.linkState === 'disconnected'
@@ -104,7 +104,7 @@ function RoomPage() {
           {events.length > 0 && (
             <aside className="island-shell max-h-28 w-full overflow-auto rounded-2xl p-3 shadow-lg sm:max-w-sm">
               <p className="island-kicker m-0 mb-1">动态</p>
-              <ul className="m-0 list-none space-y-1 p-0 text-xs text-[var(--sea-ink-soft)]">
+              <ul className="m-0 list-none space-y-1 p-0 text-xs text-sea-ink-soft">
                 {events.slice(0, 5).map((e) => (
                   <li key={e.id}>{e.text}</li>
                 ))}

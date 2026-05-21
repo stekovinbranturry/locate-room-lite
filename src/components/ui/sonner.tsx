@@ -38,7 +38,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
       toastOptions={{
         classNames: {
           toast:
-            'group-[.toaster]:border-[var(--chip-line)] group-[.toaster]:bg-[var(--surface-strong)] group-[.toaster]:text-[var(--sea-ink)] group-[.toaster]:shadow-lg',
+            'group-[.toaster]:border group-[.toaster]:border-chip-line group-[.toaster]:bg-surface-strong group-[.toaster]:text-sea-ink group-[.toaster]:shadow-lg',
         },
       }}
       {...props}

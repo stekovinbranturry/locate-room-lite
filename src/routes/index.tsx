@@ -73,10 +73,10 @@ function HomePage() {
       <section className="island-shell rise-in relative overflow-hidden rounded-[2rem] px-6 py-10 sm:px-10 sm:py-14">
         <div className="pointer-events-none absolute -left-20 -top-24 h-56 w-56 rounded-full bg-[radial-gradient(circle,rgba(79,184,178,0.32),transparent_66%)]" />
         <p className="island-kicker mb-3">LocateRoom Lite</p>
-        <h1 className="display-title mb-5 max-w-3xl text-[1.75rem] leading-snug font-bold tracking-tight text-balance text-[var(--sea-ink)] sm:text-5xl sm:leading-[1.02]">
+        <h1 className="display-title mb-5 max-w-3xl text-[1.75rem] leading-snug font-bold tracking-tight text-balance text-sea-ink sm:text-5xl sm:leading-[1.02]">
           实时位置共享小房间
         </h1>
-        <p className="mb-8 max-w-2xl text-base text-[var(--sea-ink-soft)] sm:text-lg">
+        <p className="mb-8 max-w-2xl text-base text-sea-ink-soft sm:text-lg">
           最多 4 人，通过 WebRTC DataChannel P2P 共享位置，信令仅用于建连，不转发坐标。
         </p>
 
@@ -88,7 +88,7 @@ function HomePage() {
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
             placeholder="例如：小明"
-            className="rounded-xl border-[var(--chip-line)] bg-white/70 text-[var(--sea-ink)]"
+            className="rounded-xl border border-chip-line bg-white/70 text-sea-ink"
           />
         </div>
 
@@ -112,17 +112,17 @@ function HomePage() {
                 加入房间
               </Button>
             </DialogTrigger>
-            <DialogContent className="gap-5 rounded-2xl border-[var(--chip-line)] bg-[var(--surface-strong)] sm:max-w-md">
+            <DialogContent className="gap-5 rounded-2xl border border-chip-line bg-surface-strong sm:max-w-md">
               <DialogHeader>
-                <DialogTitle className="text-[var(--sea-ink)]">加入房间</DialogTitle>
-                <DialogDescription className="text-[var(--sea-ink-soft)]">
+                <DialogTitle className="text-sea-ink">加入房间</DialogTitle>
+                <DialogDescription className="text-sea-ink-soft">
                   粘贴分享链接，或直接输入房间 ID（UUID）。
                 </DialogDescription>
               </DialogHeader>
 
               <form className="grid gap-4" onSubmit={submitJoin}>
                 <div className="grid gap-2">
-                  <Label htmlFor="room-id" className="text-[var(--sea-ink)]">
+                  <Label htmlFor="room-id" className="text-sea-ink">
                     房间 ID / 链接
                   </Label>
                   <Input
@@ -136,7 +136,7 @@ function HomePage() {
                     autoComplete="off"
                     autoFocus
                     aria-invalid={joinError ? true : undefined}
-                    className="rounded-xl border-[var(--chip-line)] bg-white/70 text-[var(--sea-ink)]"
+                    className="rounded-xl border border-chip-line bg-white/70 text-sea-ink"
                   />
                   {joinError ? <p className="text-sm text-destructive">{joinError}</p> : null}
                 </div>

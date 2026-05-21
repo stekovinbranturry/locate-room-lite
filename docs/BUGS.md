@@ -8,4 +8,4 @@
 
 ## improvements
 [x] 统一组件用法，尽可能使用 shadcn，尽量通过改造 components/ui 来实现项目中的 UI, 尽量避免在业务处自定义
-[ ] 项目中有大量不规范的 tailwind 使用, 应该避免 hardcode，如 border-[var(--line)] -> border-line, 查找所有不规范并改正
+[x] 项目中有大量不规范的 tailwind 使用, 应该避免 hardcode，如 border-[var(--line)] -> border-line, 查找所有不规范并改正

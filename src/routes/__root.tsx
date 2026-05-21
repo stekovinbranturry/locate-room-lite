@@ -13,8 +13,8 @@ function NotFound() {
   return (
     <main className="page-wrap px-4 py-16 text-center">
       <p className="island-kicker mb-3">404</p>
-      <h1 className="display-title mb-3 text-2xl font-bold text-[var(--sea-ink)]">页面不存在</h1>
-      <p className="mb-8 text-[var(--sea-ink-soft)]">请检查链接是否正确，或返回首页创建/加入房间。</p>
+      <h1 className="display-title mb-3 text-2xl font-bold text-sea-ink">页面不存在</h1>
+      <p className="mb-8 text-sea-ink-soft">请检查链接是否正确，或返回首页创建/加入房间。</p>
       <Button variant="brand" size="pill" asChild>
         <Link to="/">返回首页</Link>
       </Button>

@@ -19,19 +19,19 @@ function MetricRow({
 }) {
   return (
     <div className="flex items-center justify-between gap-2 text-xs">
-      <span className="text-[var(--sea-ink-soft)]">{label}</span>
+      <span className="text-sea-ink-soft">{label}</span>
       <span
         className={
           pass === true
-            ? 'font-mono font-semibold text-[var(--lagoon-deep)]'
+            ? 'font-mono font-semibold text-lagoon-deep'
             : pass === false
               ? 'font-mono font-semibold text-amber-700'
-              : 'font-mono font-semibold text-[var(--sea-ink)]'
+              : 'font-mono font-semibold text-sea-ink'
         }
       >
         {value}
-        {unit ? <span className="ml-0.5 font-normal text-[var(--sea-ink-soft)]">{unit}</span> : null}
-        {target ? <span className="ml-1 font-normal text-[var(--sea-ink-soft)]">/ {target}</span> : null}
+        {unit ? <span className="ml-0.5 font-normal text-sea-ink-soft">{unit}</span> : null}
+        {target ? <span className="ml-1 font-normal text-sea-ink-soft">/ {target}</span> : null}
       </span>
     </div>
   );
@@ -61,7 +61,7 @@ export default function PerfDevPanel() {
         variant="surface"
         size="pill"
         onClick={() => setOpen(true)}
-        className="pointer-events-auto fixed bottom-4 right-4 z-30 bg-[var(--surface-strong)]/95 backdrop-blur-sm"
+        className="pointer-events-auto fixed bottom-4 right-4 z-30 bg-surface-strong/95 backdrop-blur-sm"
         style={{ bottom: 'max(1rem, env(safe-area-inset-bottom))' }}
       >
         性能面板
@@ -92,7 +92,7 @@ export default function PerfDevPanel() {
 
   return (
     <aside
-      className="pointer-events-auto fixed bottom-4 right-4 z-30 w-[min(100%,20rem)] rounded-2xl border border-[var(--chip-line)] bg-[var(--surface-strong)]/95 p-3 shadow-xl backdrop-blur-md"
+      className="pointer-events-auto fixed bottom-4 right-4 z-30 w-[min(100%,20rem)] rounded-2xl border border-chip-line bg-surface-strong/95 p-3 shadow-xl backdrop-blur-md"
       style={{ bottom: 'max(1rem, env(safe-area-inset-bottom))' }}
     >
       <div className="mb-2 flex items-center justify-between gap-2">
@@ -109,7 +109,7 @@ export default function PerfDevPanel() {
 
       {!collapsed && (
         <>
-          <div className="space-y-1.5 border-b border-[var(--line)] pb-2">
+          <div className="space-y-1.5 border-b border-line pb-2">
             <MetricRow
               label="位置发送"
               value={String(locHz)}

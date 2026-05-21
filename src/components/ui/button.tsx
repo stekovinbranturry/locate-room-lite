@@ -18,14 +18,13 @@ const buttonVariants = cva(
         ghost: 'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
         link: 'text-primary underline-offset-4 hover:underline',
         brand:
-          'rounded-full border border-[rgba(50,143,151,0.3)] bg-[rgba(79,184,178,0.14)] font-semibold text-[var(--lagoon-deep)] shadow-none hover:-translate-y-0.5 hover:bg-[rgba(79,184,178,0.24)]',
+          'rounded-full border border-[rgba(50,143,151,0.3)] bg-[rgba(79,184,178,0.14)] font-semibold text-lagoon-deep shadow-none hover:-translate-y-0.5 hover:bg-[rgba(79,184,178,0.24)]',
         brandSolid:
-          'min-h-11 rounded-full border-2 border-[rgba(50,143,151,0.45)] bg-[var(--lagoon)] font-semibold text-white shadow-[0_8px_24px_rgba(47,106,74,0.28)] hover:-translate-y-0.5 hover:scale-[1.03] hover:border-[var(--lagoon-deep)] hover:bg-[var(--lagoon-deep)] active:translate-y-0 active:scale-100',
-        chip: 'rounded-full border border-[var(--chip-line)] bg-[var(--chip-bg)] font-semibold text-[var(--sea-ink)] shadow-[0_8px_22px_rgba(30,90,72,0.08)] hover:-translate-y-0.5',
-        surface:
-          'min-h-11 rounded-full border border-[var(--chip-line)] bg-[var(--surface-strong)] font-semibold text-[var(--sea-ink)] shadow-lg',
-        pill: 'h-auto rounded-full border border-[var(--chip-line)] px-3 py-1.5 text-xs font-semibold text-[var(--sea-ink)] hover:bg-[var(--chip-bg)]',
-        pillActive: 'h-auto rounded-full bg-[var(--lagoon)] px-3 py-1.5 text-xs font-semibold text-white',
+          'min-h-11 rounded-full border-2 border-[rgba(50,143,151,0.45)] bg-lagoon font-semibold text-white shadow-[0_8px_24px_rgba(47,106,74,0.28)] hover:-translate-y-0.5 hover:scale-[1.03] hover:border-lagoon-deep hover:bg-lagoon-deep active:translate-y-0 active:scale-100',
+        chip: 'rounded-full border border-chip-line bg-chip-bg font-semibold text-sea-ink shadow-[0_8px_22px_rgba(30,90,72,0.08)] hover:-translate-y-0.5',
+        surface: 'min-h-11 rounded-full border border-chip-line bg-surface-strong font-semibold text-sea-ink shadow-lg',
+        pill: 'h-auto rounded-full border border-chip-line px-3 py-1.5 text-xs font-semibold text-sea-ink hover:bg-chip-bg',
+        pillActive: 'h-auto rounded-full bg-lagoon px-3 py-1.5 text-xs font-semibold text-white',
       },
       size: {
         default: 'h-9 px-4 py-2 has-[>svg]:px-3',
