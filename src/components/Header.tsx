@@ -1,10 +1,7 @@
-import { Link, useRouterState } from '@tanstack/react-router';
+import { Link } from '@tanstack/react-router';
 import ThemeToggle from './ThemeToggle';
 
 export default function Header() {
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const isHome = pathname === '/';
-
   return (
     <header className="site-header sticky top-0 z-50 border-b border-[var(--line)] bg-[var(--header-bg)] backdrop-blur-lg">
       <nav className="page-wrap flex h-14 items-center justify-between gap-3 px-4 sm:h-16">
@@ -18,17 +15,15 @@ export default function Header() {
         </Link>
 
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-          {!isHome && (
-            <Link
-              to="/"
-              className="header-nav-link rounded-lg px-2.5 py-1.5 text-sm font-semibold no-underline"
-              activeProps={{
-                className: 'header-nav-link is-active rounded-lg px-2.5 py-1.5 text-sm font-semibold no-underline',
-              }}
-            >
-              首页
-            </Link>
-          )}
+          <Link
+            to="/"
+            className="header-nav-link rounded-lg px-2.5 py-1.5 text-sm font-semibold no-underline"
+            activeProps={{
+              className: 'header-nav-link is-active rounded-lg px-2.5 py-1.5 text-sm font-semibold no-underline',
+            }}
+          >
+            首页
+          </Link>
           <ThemeToggle />
         </div>
       </nav>
