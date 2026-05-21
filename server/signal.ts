@@ -137,4 +137,6 @@ Bun.serve<ClientData>({
   },
 });
 
-console.log(`[signal] http://0.0.0.0:${PORT}  ws://0.0.0.0:${PORT}/signal`);
+console.log(
+  `[signal] listening on 0.0.0.0:${PORT} (PORT=${process.env.PORT ?? 'unset'}, SIGNAL_PORT=${process.env.SIGNAL_PORT ?? 'unset'})`,
+);

@@ -71,10 +71,12 @@ bun run dev
 
 **信令连不上 / 502 排查**
 
-1. Railway → **Deployments** → 最新部署是否 Success；查看 **Deploy Logs** 是否有 `[signal] http://0.0.0.0:…`
-2. **Settings → Config-as-code** 必须为 `railway.toml`（使用 `Dockerfile.signal`，不要跑 `vite build`）
-3. 本地自检：`curl https://locate-room-lite-production.up.railway.app/health`
-4. 失败时在 Railway 点 **Redeploy** 或 **Restart**
+1. Railway → **Deployments** → 最新部署 Success；**Deploy Logs** 应有 `[signal] listening on 0.0.0.0:8080 (PORT=8080, ...)`
+2. **Settings → Variables**：删除 `SIGNAL_PORT`（只保留 Railway 自动注入的 `PORT`）
+3. **Settings → Networking → Target Port**：设为 **`8080`** 或与 Deploy Log 里 `PORT=` 一致（勿填 3001）
+4. **Settings → Config-as-code** = `railway.toml`
+5. 自检：`curl https://locate-room-lite-production.up.railway.app/health` → `{"ok":true,...}`，不是 502
+6. 仍失败 → **Redeploy**（已改用 `oven/bun:1.2` 镜像，修复 Bun 公网路由问题）
 
 | 文件 | 作用 |
 |------|------|
