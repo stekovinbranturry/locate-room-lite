@@ -12,12 +12,15 @@ type RoomSettings = {
   setWeakNetMode: (m: WeakNetMode) => void;
 };
 
-const defaultPerfOpen =
-  typeof import.meta !== 'undefined' && import.meta.env.DEV ? localStorage.getItem('locate-perf-panel') !== '0' : false;
+function readPerfPanelOpen(): boolean {
+  if (typeof window === 'undefined') return false;
+  if (import.meta.env.DEV) return localStorage.getItem('locate-perf-panel') !== '0';
+  return localStorage.getItem('locate-perf-panel') === '1';
+}
 
 export const useRoomSettingsStore = create<RoomSettings>((set) => ({
   showTrails: true,
-  perfPanelOpen: defaultPerfOpen,
+  perfPanelOpen: readPerfPanelOpen(),
   weakNetMode: 'auto',
 
   setShowTrails: (showTrails) => set({ showTrails }),

@@ -67,11 +67,13 @@ export function useRoomSession({ roomId, peerId, displayName }: SessionOpts) {
     [roomId, peerId, setLocalLocation],
   );
 
+  const onGeoError = useCallback((message: string) => pushEvent(`定位: ${message}`), [pushEvent]);
+
   useGeolocation({
     enabled: true,
     getTickIntervalMs: () => getLocationTickMs(useRoomSettingsStore.getState().weakNetMode),
     onTick,
-    onError: (message) => pushEvent(`定位: ${message}`),
+    onError: onGeoError,
   });
 
   return {};

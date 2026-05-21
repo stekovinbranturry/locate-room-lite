@@ -1,5 +1,5 @@
 import { TanStackDevtools } from '@tanstack/react-devtools';
-import { createRootRoute, HeadContent, Scripts } from '@tanstack/react-router';
+import { createRootRoute, HeadContent, Link, Scripts } from '@tanstack/react-router';
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools';
 import Header from '../components/Header';
 import { Toaster } from '../components/ui/sonner';
@@ -7,6 +7,22 @@ import { Toaster } from '../components/ui/sonner';
 import appCss from '../styles.css?url';
 
 const THEME_INIT_SCRIPT = `(function(){try{var stored=window.localStorage.getItem('theme');var mode=(stored==='light'||stored==='dark'||stored==='auto')?stored:'auto';var prefersDark=window.matchMedia('(prefers-color-scheme: dark)').matches;var resolved=mode==='auto'?(prefersDark?'dark':'light'):mode;var root=document.documentElement;root.classList.remove('light','dark');root.classList.add(resolved);if(mode==='auto'){root.removeAttribute('data-theme')}else{root.setAttribute('data-theme',mode)}root.style.colorScheme=resolved;}catch(e){}})();`;
+
+function NotFound() {
+  return (
+    <main className="page-wrap px-4 py-16 text-center">
+      <p className="island-kicker mb-3">404</p>
+      <h1 className="display-title mb-3 text-2xl font-bold text-[var(--sea-ink)]">页面不存在</h1>
+      <p className="mb-8 text-[var(--sea-ink-soft)]">请检查链接是否正确，或返回首页创建/加入房间。</p>
+      <Link
+        to="/"
+        className="inline-flex rounded-full border border-[rgba(50,143,151,0.3)] bg-[rgba(79,184,178,0.14)] px-5 py-2.5 text-sm font-semibold text-[var(--lagoon-deep)] no-underline transition hover:bg-[rgba(79,184,178,0.24)]"
+      >
+        返回首页
+      </Link>
+    </main>
+  );
+}
 
 export const Route = createRootRoute({
   head: () => ({
@@ -29,6 +45,7 @@ export const Route = createRootRoute({
       },
     ],
   }),
+  notFoundComponent: NotFound,
   shellComponent: RootDocument,
 });
 
