@@ -27,7 +27,7 @@ alwaysApply: false
 - 使用 Tailwind + 现有 `island-shell` 样式令牌
 - 新组件优先 `pnpm dlx shadcn@latest add …`（见 `components.json`）
 
-## 加分项
+## 扩展功能
 
 - 性能数据写入 `perfMonitor`，面板见 `PerfDevPanel.tsx`
 - 轨迹：`trailStore` + `trails` layer，勿在 React 中高频重建 map

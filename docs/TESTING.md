@@ -72,7 +72,7 @@ flowchart LR
 | GitHub 仓库 / 部署链接 | — | — | **●** | 前端：[locate-room-lite.vercel.app](https://locate-room-lite.vercel.app/) |
 | README 架构/性能/AI 说明 | — | — | **●**（审查文档） |
 
-### 2.4 加分项（选做）
+### 2.4 扩展功能（选做）
 
 | 验收项 | V | P | M |
 |--------|---|---|---|

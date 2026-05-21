@@ -21,7 +21,7 @@
 - **可恢复**：短暂断网后 ICE/信令重连，恢复 DataChannel。
 - **可观测**：成员上下线对 UI 可见（列表 + 地图状态）。
 
-### 1.3 不在 MVP 范围（加分项）
+### 1.3 不在 MVP 范围
 
 语音对讲、轨迹、弱网降级、移动端深度优化——文档预留扩展点，**4–6h** 内不阻塞主路径。
 
@@ -180,7 +180,7 @@ type Message =
 |------|------|
 | `snapshot` | Channel 首次 open；新 join 方立即收到各方最新点 |
 | `update` | 本地 10 Hz 采样后广播给所有已连接 peer |
-| `ping` / `pong` | 可选；辅助判断链路 RTT（加分项弱网可用） |
+| `ping` / `pong` | 可选；辅助判断链路 RTT（弱网策略可用） |
 
 **新成员「立即可见」**：每个已有 peer 在 channel open 时发 `snapshot`；新 peer 合并为本地 `peers[peerId].location`。
 
@@ -285,7 +285,7 @@ src/
 **优化清单（MVP）**
 
 - DataChannel 二进制（`Float32Array` 打包 lat/lng/ts）——报文更小，可选。
-- `update` 合并：100ms 内仅发 delta 超过 ~2m 的位移（弱网加分项）。
+- `update` 合并：100ms 内仅发 delta 超过 ~2m 的位移（弱网策略）。
 - 移动端减少 `setData` 属性字段，仅更新 coordinates。
 
 ---
@@ -328,7 +328,7 @@ src/
 
 ---
 
-## 10. 加分项实现
+## 10. 扩展功能实现
 
 | 功能 | 状态 | 实现要点 |
 |------|------|----------|
