@@ -80,25 +80,22 @@ function HomePage() {
           最多 4 人，通过 WebRTC DataChannel P2P 共享位置，信令仅用于建连，不转发坐标。
         </p>
 
-        <label className="mb-6 block max-w-md">
-          <span className="mb-2 block text-sm font-semibold text-[var(--sea-ink)]">昵称</span>
-          <input
+        <div className="grid max-w-md gap-2">
+          <Label htmlFor="display-name">昵称</Label>
+          <Input
+            id="display-name"
             type="text"
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
             placeholder="例如：小明"
-            className="w-full rounded-xl border border-[var(--chip-line)] bg-white/70 px-4 py-2.5 text-[var(--sea-ink)] outline-none focus:border-[var(--lagoon-deep)]"
+            className="rounded-xl border-[var(--chip-line)] bg-white/70 text-[var(--sea-ink)]"
           />
-        </label>
+        </div>
 
-        <div className="flex flex-wrap gap-3">
-          <button
-            type="button"
-            onClick={startRoom}
-            className="rounded-full border border-[rgba(50,143,151,0.3)] bg-[rgba(79,184,178,0.14)] px-5 py-2.5 text-sm font-semibold text-[var(--lagoon-deep)] transition hover:-translate-y-0.5 hover:bg-[rgba(79,184,178,0.24)]"
-          >
+        <div className="mt-6 flex flex-wrap gap-3">
+          <Button type="button" variant="brand" size="pill" onClick={startRoom}>
             创建房间
-          </button>
+          </Button>
 
           <Dialog
             open={joinOpen}
@@ -111,11 +108,7 @@ function HomePage() {
             }}
           >
             <DialogTrigger asChild>
-              <Button
-                type="button"
-                variant="outline"
-                className="h-auto rounded-full border-[rgba(23,58,64,0.2)] bg-white/50 px-5 py-2.5 text-sm font-semibold text-[var(--sea-ink)] shadow-none hover:-translate-y-0.5 hover:bg-white/80"
-              >
+              <Button type="button" variant="outline" size="pill">
                 加入房间
               </Button>
             </DialogTrigger>
@@ -149,18 +142,10 @@ function HomePage() {
                 </div>
 
                 <DialogFooter className="gap-2 sm:gap-2">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className="rounded-full border-[var(--chip-line)]"
-                    onClick={() => setJoinOpen(false)}
-                  >
+                  <Button type="button" variant="outline" size="pill" onClick={() => setJoinOpen(false)}>
                     取消
                   </Button>
-                  <Button
-                    type="submit"
-                    className="rounded-full bg-[var(--lagoon)] text-white hover:bg-[var(--lagoon-deep)]"
-                  >
+                  <Button type="submit" variant="brandSolid" size="pill">
                     加入
                   </Button>
                 </DialogFooter>

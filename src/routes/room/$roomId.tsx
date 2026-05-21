@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
+import { Button } from '#/components/ui/button';
 import MapView from '#/features/map/MapView';
 import PerfDevPanel from '#/features/perf/PerfDevPanel';
 import { useRoomStore } from '#/features/room/memberStore';
@@ -66,20 +67,13 @@ function RoomPage() {
             </p>
           </div>
 
-          <button
-            type="button"
-            onClick={() => void copyShareLink()}
-            className="min-h-11 rounded-full border-2 border-[rgba(50,143,151,0.45)] bg-[var(--lagoon)] px-4 py-2.5 text-sm font-semibold text-white shadow-[0_8px_24px_rgba(47,106,74,0.28)] transition-all duration-200 hover:-translate-y-0.5 hover:scale-[1.03] hover:border-[var(--lagoon-deep)] hover:bg-[var(--lagoon-deep)] hover:shadow-[0_14px_32px_rgba(47,106,74,0.42)] active:translate-y-0 active:scale-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lagoon)] focus-visible:ring-offset-2"
-          >
+          <Button type="button" variant="brandSolid" onClick={() => void copyShareLink()}>
             复制分享链接
-          </button>
+          </Button>
 
-          <Link
-            to="/"
-            className="inline-flex min-h-11 items-center rounded-full border border-[var(--chip-line)] bg-[var(--surface-strong)] px-4 py-2.5 text-sm font-semibold text-[var(--sea-ink)] no-underline shadow-lg"
-          >
-            离开
-          </Link>
+          <Button variant="surface" asChild>
+            <Link to="/">离开</Link>
+          </Button>
         </div>
 
         <div className="pointer-events-auto flex flex-col gap-2 sm:flex-row sm:items-end">

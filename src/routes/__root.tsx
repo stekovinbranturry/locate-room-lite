@@ -2,6 +2,7 @@ import { TanStackDevtools } from '@tanstack/react-devtools';
 import { createRootRoute, HeadContent, Link, Scripts } from '@tanstack/react-router';
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools';
 import Header from '../components/Header';
+import { Button } from '../components/ui/button';
 import { Toaster } from '../components/ui/sonner';
 
 import appCss from '../styles.css?url';
@@ -14,12 +15,9 @@ function NotFound() {
       <p className="island-kicker mb-3">404</p>
       <h1 className="display-title mb-3 text-2xl font-bold text-[var(--sea-ink)]">页面不存在</h1>
       <p className="mb-8 text-[var(--sea-ink-soft)]">请检查链接是否正确，或返回首页创建/加入房间。</p>
-      <Link
-        to="/"
-        className="inline-flex rounded-full border border-[rgba(50,143,151,0.3)] bg-[rgba(79,184,178,0.14)] px-5 py-2.5 text-sm font-semibold text-[var(--lagoon-deep)] no-underline transition hover:bg-[rgba(79,184,178,0.24)]"
-      >
-        返回首页
-      </Link>
+      <Button variant="brand" size="pill" asChild>
+        <Link to="/">返回首页</Link>
+      </Button>
     </main>
   );
 }

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
+import { Button } from '#/components/ui/button';
 import { PERF_TARGETS, perfMonitor } from '#/features/perf/perfMonitor';
 import { useRoomSettingsStore, type WeakNetMode } from '#/features/room/roomSettingsStore';
 
@@ -55,14 +56,16 @@ export default function PerfDevPanel() {
 
   if (!open) {
     return (
-      <button
+      <Button
         type="button"
+        variant="surface"
+        size="pill"
         onClick={() => setOpen(true)}
-        className="pointer-events-auto fixed bottom-4 right-4 z-30 rounded-full border border-[var(--chip-line)] bg-[var(--surface-strong)]/95 px-3 py-2 text-xs font-semibold text-[var(--sea-ink)] shadow-lg backdrop-blur-sm"
+        className="pointer-events-auto fixed bottom-4 right-4 z-30 bg-[var(--surface-strong)]/95 backdrop-blur-sm"
         style={{ bottom: 'max(1rem, env(safe-area-inset-bottom))' }}
       >
         性能面板
-      </button>
+      </Button>
     );
   }
 
@@ -95,20 +98,12 @@ export default function PerfDevPanel() {
       <div className="mb-2 flex items-center justify-between gap-2">
         <p className="island-kicker m-0">性能监控</p>
         <div className="flex gap-1">
-          <button
-            type="button"
-            onClick={() => setCollapsed((c) => !c)}
-            className="rounded-lg px-2 py-1 text-xs text-[var(--sea-ink-soft)] hover:bg-[var(--chip-bg)]"
-          >
+          <Button type="button" variant="ghost" size="pill" onClick={() => setCollapsed((c) => !c)}>
             {collapsed ? '展开' : '收起'}
-          </button>
-          <button
-            type="button"
-            onClick={() => setOpen(false)}
-            className="rounded-lg px-2 py-1 text-xs text-[var(--sea-ink-soft)] hover:bg-[var(--chip-bg)]"
-          >
+          </Button>
+          <Button type="button" variant="ghost" size="pill" onClick={() => setOpen(false)}>
             关闭
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -153,27 +148,19 @@ export default function PerfDevPanel() {
           </div>
 
           <div className="mt-2 flex flex-wrap gap-2">
-            <button
+            <Button
               type="button"
+              variant={showTrails ? 'pillActive' : 'pill'}
               onClick={() => setShowTrails(!showTrails)}
-              className={`rounded-full px-3 py-1.5 text-xs font-semibold ${showTrails ? 'bg-[var(--lagoon)] text-white' : 'border border-[var(--chip-line)] text-[var(--sea-ink)]'}`}
             >
               轨迹 {showTrails ? '开' : '关'}
-            </button>
-            <button
-              type="button"
-              onClick={cycleWeak}
-              className="rounded-full border border-[var(--chip-line)] px-3 py-1.5 text-xs font-semibold text-[var(--sea-ink)]"
-            >
+            </Button>
+            <Button type="button" variant="pill" onClick={cycleWeak}>
               弱网: {weakNetMode}
-            </button>
-            <button
-              type="button"
-              onClick={() => void copyReport()}
-              className="rounded-full border border-[var(--chip-line)] px-3 py-1.5 text-xs font-semibold text-[var(--sea-ink)]"
-            >
+            </Button>
+            <Button type="button" variant="pill" onClick={() => void copyReport()}>
               导出 JSON
-            </button>
+            </Button>
           </div>
         </>
       )}
